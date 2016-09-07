@@ -1,10 +1,11 @@
 """
 Web : https://gpiozero.readthedocs.io/en/v1.3.1/recipes.html#led-with-variable-brightness
-Usage : python led_brightness_basic.py
+Usage : python led_brightness_alternatively.py
 """
 from gpiozero import PWMLED
-from time import sleep
+from signal import pause
 from sys import exit
+import signal
 
 try:
 	gpio_pin_num = int(raw_input("Which gpio pin?"))
@@ -14,11 +15,11 @@ except ValueError:
 
 led = PWMLED(gpio_pin_num)
 
-while True:
-	led.value = 0  # off
-	sleep(1)
-	led.value = 0.5  # half brightness
-	sleep(1)
-	led.value = 1  # full brightness
-	sleep(1)
+try:
+	led.pulse()
+	pause()
+except KeyboardInterrupt:
+	pass
+finally:
+	print("Handling Ctrl+C")
 

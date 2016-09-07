@@ -1,10 +1,11 @@
 """
 Web : https://gpiozero.readthedocs.io/en/v1.3.1/recipes.html#led
-Usage : python led_blink_basic.py
+Usage : python led_blink_alternatively.py
 """
 from gpiozero import LED
-from time import sleep
+from signal import pause
 from sys import exit
+import signal
 
 try:
 	gpio_pin_num = int(raw_input("Which gpio pin?"))
@@ -14,9 +15,11 @@ except ValueError:
 
 led = LED(gpio_pin_num)
 
-while True:
-	led.on()
-	sleep(1)
-	led.off()
-	sleep(1)
+try:
+	led.blink()
+	pause()
+except KeyboardInterrupt:
+	pass
+finally:
+	print("Handling Ctrl+C")
 
